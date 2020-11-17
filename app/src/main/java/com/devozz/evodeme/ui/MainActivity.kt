@@ -1,4 +1,4 @@
-package com.devozz.evodeme
+package com.devozz.evodeme.ui
 
 
 import android.content.Intent
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.devozz.evodeme.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
 
         if (currentUser != null) {
-            val intent = Intent(applicationContext,FeedActivity::class.java)
+            val intent = Intent(applicationContext, FeedActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 //Signed In
                 Toast.makeText(applicationContext,"Welcome: ${auth.currentUser?.email.toString()}",Toast.LENGTH_LONG).show()
-                val intent = Intent(applicationContext,FeedActivity::class.java)
+                val intent = Intent(applicationContext, FeedActivity::class.java)
                 startActivity(intent)
                 finish()
 
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener { task ->
 
             if (task.isSuccessful) {
-                val intent = Intent(applicationContext,FeedActivity::class.java)
+                val intent = Intent(applicationContext, FeedActivity::class.java)
                 startActivity(intent)
                 finish()
             }

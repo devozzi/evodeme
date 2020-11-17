@@ -1,4 +1,4 @@
-package com.devozz.evodeme
+package com.devozz.evodeme.ui
 
 //d5d309701918227880838d280c4c94536c5789e0 
 import android.Manifest
@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.devozz.evodeme.R
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

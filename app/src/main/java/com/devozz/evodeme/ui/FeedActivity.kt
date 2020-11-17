@@ -1,4 +1,4 @@
-package com.devozz.evodeme
+package com.devozz.evodeme.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.devozz.evodeme.R
+import com.devozz.evodeme.adapter.FeedRecyclerAdapter
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,14 +41,14 @@ class FeedActivity : AppCompatActivity() {
 
         if (item.itemId == R.id.add_post) {
             //Upload Activity
-            val intent = Intent(applicationContext,UploadActivity::class.java)
+            val intent = Intent(applicationContext, UploadActivity::class.java)
             startActivity(intent)
 
         } else if (item.itemId == R.id.logout) {
             //Logout
 
             auth.signOut()
-            val intent = Intent(applicationContext,MainActivity::class.java)
+            val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
             finish()
 

@@ -1,4 +1,4 @@
-package com.devozz.evodeme
+package com.devozz.evodeme.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.devozz.evodeme.R
+import com.devozz.evodeme.util.loadImage
 import com.squareup.picasso.Picasso
 
 class FeedRecyclerAdapter(private val userEmailArray: ArrayList<String>, private val userCommentArray : ArrayList<String> , private val userImageArray : ArrayList<String>) : RecyclerView.Adapter<FeedRecyclerAdapter.PostHolder>() {
@@ -22,10 +24,11 @@ class FeedRecyclerAdapter(private val userEmailArray: ArrayList<String>, private
     }
 
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
-        holder.recyclerEmailText?.text = userEmailArray[position]
-        holder.recyclerCommentText?.text = userCommentArray[position]
-        Picasso.get().load(userImageArray[position]).into(holder.recyclerImageView)
-
+        holder.apply {
+            recyclerEmailText?.text = userEmailArray[position]
+            recyclerCommentText?.text = userCommentArray[position]
+            recyclerImageView.loadImage(url = userImageArray[position])
+        }
     }
 
 
