@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "865775622652",
+    "firebase_url": "https://evodeme-e9832.firebaseio.com",
+    "project_id": "evodeme-e9832",
+    "storage_bucket": "evodeme-e9832.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865775622652:android:3b45ed3875deb89d5bfa79",
+        "android_client_info": {
+          "package_name": "com.devozz.evodeme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865775622652-pco1i7o5f95h2qa1sfsi21mpfvnceq6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPz07OmJ7M78GG7GfHq8xI3gHofVHnE-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865775622652-pco1i7o5f95h2qa1sfsi21mpfvnceq6t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
