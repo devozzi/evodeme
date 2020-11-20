@@ -103,7 +103,7 @@ class UploadActivity : AppCompatActivity() {
 
     fun uploadClicked (view: View) {
 
-        //UUID -> image name
+
         val uuid = UUID.randomUUID()
         val imageName = "$uuid.jpg"
 
@@ -120,10 +120,13 @@ class UploadActivity : AppCompatActivity() {
 
 
                     val postMap = hashMapOf<String,Any>()
-                    postMap.put("downloadUrl",downloadUrl)
-                    postMap.put("userEmail",auth.currentUser!!.email.toString())
-                    postMap.put("comment",uploadCommentText.text.toString())
-                    postMap.put("date",Timestamp.now())
+                    postMap.apply {
+                        put("downloadUrl",downloadUrl)
+                        put("userEmail",auth.currentUser!!.email.toString())
+                        put("comment",uploadCommentText.text.toString())
+                        put("date",Timestamp.now())
+                    }
+
 
 
                     db.collection( "Posts").add(postMap).addOnCompleteListener{task ->
