@@ -4,58 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_login_background"
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/passwordText"
+        android:id="@+id/edtPassword"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="72dp"
         android:layout_marginEnd="72dp"
+        android:textColor="@color/black"
         android:layout_marginBottom="25dp"
         android:ems="10"
-        android:hint="user password"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userEmailText" />
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
     <EditText
-        android:id="@+id/userEmailText"
+        android:id="@+id/edtEmail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="157dp"
+        android:textColor="@color/black"
         android:layout_marginBottom="16dp"
         android:ems="10"
-        android:hint="user email"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/passwordText"
-        app:layout_constraintEnd_toEndOf="@+id/passwordText"
-        app:layout_constraintStart_toStartOf="@+id/button"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/edtPassword"
+        app:layout_constraintEnd_toEndOf="@+id/edtPassword"
+        app:layout_constraintStart_toStartOf="@+id/btnSignIn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-        android:onClick="signInClicked"
-        android:text="Sign In "
-        app:layout_constraintEnd_toStartOf="@+id/button2"
+        android:text="Sign In"
+        style="@style/Widget.AppCompat.Button.Colored"
+        app:layout_constraintEnd_toStartOf="@+id/btnSignUp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="350dp"
-        android:onClick="signUpClicked"
         android:text="Sign Up"
+        style="@style/Widget.AppCompat.Button.Colored"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintStart_toEndOf="@+id/btnSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 </androidx.constraintlayout.widget.ConstraintLayout>

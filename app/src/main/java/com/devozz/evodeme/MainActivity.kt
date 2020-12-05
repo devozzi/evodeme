@@ -1,74 +1,84 @@
 package com.devozz.evodeme
 
-
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import android.widget.Button
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import com.devozz.evodeme.utils.toast
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var auth : FirebaseAuth
+    private lateinit var auth: FirebaseAuth
+
+    private lateinit var email: EditText
+    private lateinit var password: EditText
+    private lateinit var btnSignIn: Button
+    private lateinit var btnSignUp: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initUI()
+        initListeners()
+        initFirebaseInstance()
+        checkCurrentUser()
+    }
 
-        auth = FirebaseAuth.getInstance()
+    private fun initListeners() {
+        btnSignIn.setOnClickListener { signInOperation() }
+        btnSignUp.setOnClickListener { signUpOperation() }
+    }
 
-        val currentUser = auth.currentUser
+    private fun signInOperation() {
+        auth.signInWithEmailAndPassword(
+            email.text.toString(),
+            password.text.toString()
+        ).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                //Signed In
+                toast("Welcome ${auth.currentUser?.email.toString()}")
+                startFeedActivity()
+            }
+        }.addOnFailureListener { e ->
+            toast(e.message.toString())
+        }
+    }
 
-        if (currentUser != null) {
-            val intent = Intent(applicationContext,FeedActivity::class.java)
-            startActivity(intent)
+    private fun signUpOperation() {
+        auth.createUserWithEmailAndPassword(
+            email.text.toString(),
+            password.text.toString()
+        ).addOnCompleteListener { task ->
+            if (task.isSuccessful)
+                startFeedActivity()
+        }.addOnFailureListener { e ->
+            toast(e.message.toString())
+        }
+    }
+
+    private fun initUI() {
+        email = findViewById(R.id.edtEmail)
+        password = findViewById(R.id.edtPassword)
+        btnSignIn = findViewById(R.id.btnSignIn)
+        btnSignUp = findViewById(R.id.btnSignUp)
+    }
+
+    private fun checkCurrentUser() {
+        auth.currentUser?.let {
+            startFeedActivity()
+        }
+    }
+
+    private fun startFeedActivity() =
+        Intent(applicationContext, FeedActivity::class.java).run {
+            startActivity(this)
             finish()
         }
 
-
-
-    }
-
-
-    fun signInClicked(view : View) {
-
-        auth.signInWithEmailAndPassword(userEmailText.text.toString(),passwordText.text.toString()).addOnCompleteListener { task ->
-
-            if (task.isSuccessful) {
-                //Signed In
-                Toast.makeText(applicationContext,"Welcome: ${auth.currentUser?.email.toString()}",Toast.LENGTH_LONG).show()
-                val intent = Intent(applicationContext,FeedActivity::class.java)
-                startActivity(intent)
-                finish()
-
-            }
-
-        }.addOnFailureListener { exception ->
-            Toast.makeText(applicationContext,exception.localizedMessage.toString(),Toast.LENGTH_LONG).show()
-        }
-
-    }
-
-    fun signUpClicked(view : View) {
-
-        val email = userEmailText.text.toString()
-        val password = passwordText.text.toString()
-
-        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener { task ->
-
-            if (task.isSuccessful) {
-                val intent = Intent(applicationContext,FeedActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-
-        }.addOnFailureListener { exception ->
-            if (exception != null) {
-                Toast.makeText(applicationContext,exception.localizedMessage.toString(),Toast.LENGTH_LONG).show()
-            }
-        }
-
+    private fun initFirebaseInstance() {
+        auth = FirebaseAuth.getInstance()
     }
 }
