@@ -8,45 +8,39 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.devozz.evodeme.R
 import com.devozz.evodeme.util.loadImage
-import com.squareup.picasso.Picasso
 
-class FeedRecyclerAdapter(private val userEmailArray: ArrayList<String>, private val userCommentArray : ArrayList<String> , private val userImageArray : ArrayList<String>) : RecyclerView.Adapter<FeedRecyclerAdapter.PostHolder>() {
+class FeedRecyclerAdapter(
+    private val userEmailArray: ArrayList<String>,
+    private val userCommentArray : ArrayList<String>,
+    private val userImageArray : ArrayList<String>
+) : RecyclerView.Adapter<FeedRecyclerAdapter.PostHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.recycler_view_row,parent,false)
-        return PostHolder(view)
+        return PostHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_row,parent,false)
+        )
     }
 
-    override fun getItemCount(): Int {
-        return userEmailArray.size
-
-    }
+    override fun getItemCount(): Int = userEmailArray.size
 
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
         holder.apply {
             recyclerEmailText?.text = userEmailArray[position]
             recyclerCommentText?.text = userCommentArray[position]
-            recyclerImageView.loadImage(url = userImageArray[position])
+            recyclerImageView?.loadImage(url = userImageArray[position])
         }
     }
 
-
     class PostHolder(view : View) : RecyclerView.ViewHolder(view) {
-
-        //View Holder class
-
         var recyclerEmailText : TextView? = null
         var recyclerCommentText : TextView? = null
         var recyclerImageView : ImageView? = null
-
-
         init {
-            recyclerEmailText = view.findViewById(R.id.recyclerEmailText)
-            recyclerCommentText = view.findViewById(R.id.recyclerCommentText)
-            recyclerImageView = view.findViewById(R.id.recyclerImageView)
-
+            view.run {
+                recyclerEmailText = findViewById(R.id.recyclerEmailText)
+                recyclerCommentText = findViewById(R.id.recyclerCommentText)
+                recyclerImageView = findViewById(R.id.recyclerImageView)
+            }
         }
-
     }
 }

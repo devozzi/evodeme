@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EvOdeme"
         tools:ignore="AllowBackup">
-        <activity android:name=".UploadActivity"/>
-        <activity android:name=".FeedActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.UploadActivity"/>
+        <activity android:name=".ui.FeedActivity" />
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,19 +1,23 @@
-package com.devozz.evodeme
+package com.devozz.evodeme.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
-import com.devozz.evodeme.utils.Constants.DB_FIELD_COMMENT
-import com.devozz.evodeme.utils.Constants.DB_FIELD_DATE
-import com.devozz.evodeme.utils.Constants.DB_FIELD_DOWNLOADURL
-import com.devozz.evodeme.utils.Constants.DB_FIELD_USEREMAIL
-import com.devozz.evodeme.utils.Constants.FIREBASE_COLLECTION_PATH
-import com.devozz.evodeme.utils.toast
+import com.devozz.evodeme.R
+import com.devozz.evodeme.adapter.FeedRecyclerAdapter
+import com.devozz.evodeme.util.Constants.DB_FIELD_COMMENT
+import com.devozz.evodeme.util.Constants.DB_FIELD_DATE
+import com.devozz.evodeme.util.Constants.DB_FIELD_DOWNLOADURL
+import com.devozz.evodeme.util.Constants.DB_FIELD_USEREMAIL
+import com.devozz.evodeme.util.Constants.FIREBASE_COLLECTION_PATH
+import com.devozz.evodeme.util.toast
+import com.devozz.evodeme.util.visibleIf
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query.Direction.DESCENDING
@@ -24,10 +28,11 @@ class FeedActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var recyclerView: RecyclerView
+    private lateinit var emptyData: TextView
 
-    var userEmailFromFB = ArrayList<String>()
-    var userCommentFromFB = ArrayList<String>()
-    var userImageFromFB = ArrayList<String>()
+    var userEmail = ArrayList<String>()
+    var userComment = ArrayList<String>()
+    var userImage = ArrayList<String>()
 
     var feedAdapter: FeedRecyclerAdapter? = null
 
@@ -68,8 +73,9 @@ class FeedActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@FeedActivity, VERTICAL, false)
-            feedAdapter = FeedRecyclerAdapter(userEmailFromFB, userCommentFromFB, userImageFromFB)
+            feedAdapter = FeedRecyclerAdapter(userEmail, userComment, userImage)
             recyclerView.adapter = adapter
+            emptyData visibleIf userEmail.isNullOrEmpty()
         }
     }
 
@@ -80,6 +86,7 @@ class FeedActivity : AppCompatActivity() {
 
     private fun initUI() {
         recyclerView = findViewById(R.id.recyclerView)
+        emptyData = findViewById(R.id.emptyData)
     }
 
 
@@ -100,9 +107,9 @@ class FeedActivity : AppCompatActivity() {
             clearLocalData()
             documents.forEach { documentItem ->
                 with(documentItem) {
-                    getString(DB_FIELD_COMMENT)?.let { userCommentFromFB.add(it) }
-                    getString(DB_FIELD_USEREMAIL)?.let { userEmailFromFB.add(it) }
-                    getString(DB_FIELD_DOWNLOADURL)?.let { userImageFromFB.add(it) }
+                    getString(DB_FIELD_COMMENT)?.let { userComment.add(it) }
+                    getString(DB_FIELD_USEREMAIL)?.let { userEmail.add(it) }
+                    getString(DB_FIELD_DOWNLOADURL)?.let { userImage.add(it) }
                     getTimestamp(DB_FIELD_DATE)?.let { }//Todo
                 }
             }
@@ -110,8 +117,8 @@ class FeedActivity : AppCompatActivity() {
     }
 
     private fun clearLocalData() {
-        userImageFromFB.clear()
-        userCommentFromFB.clear()
-        userEmailFromFB.clear()
+        userImage.clear()
+        userComment.clear()
+        userEmail.clear()
     }
 }

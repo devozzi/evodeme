@@ -1,4 +1,4 @@
-package com.devozz.evodeme.utils
+package com.devozz.evodeme.util
 
 object Constants {
     const val FIREBASE_COLLECTION_PATH = "Posts"

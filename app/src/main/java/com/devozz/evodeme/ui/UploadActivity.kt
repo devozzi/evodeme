@@ -1,4 +1,4 @@
-package com.devozz.evodeme
+package com.devozz.evodeme.ui
 
 //d5d309701918227880838d280c4c94536c5789e0
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -17,20 +17,24 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.devozz.evodeme.utils.Constants.DB_FIELD_COMMENT
-import com.devozz.evodeme.utils.Constants.DB_FIELD_DATE
-import com.devozz.evodeme.utils.Constants.DB_FIELD_DOWNLOADURL
-import com.devozz.evodeme.utils.Constants.DB_FIELD_USEREMAIL
-import com.devozz.evodeme.utils.Constants.FIREBASE_COLLECTION_PATH
-import com.devozz.evodeme.utils.Constants.FIREBASE_IMAGES_PATH
-import com.devozz.evodeme.utils.toast
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat.checkSelfPermission
+import com.devozz.evodeme.R
+import com.devozz.evodeme.util.Constants.DB_FIELD_COMMENT
+import com.devozz.evodeme.util.Constants.DB_FIELD_DATE
+import com.devozz.evodeme.util.Constants.DB_FIELD_DOWNLOADURL
+import com.devozz.evodeme.util.Constants.DB_FIELD_USEREMAIL
+import com.devozz.evodeme.util.Constants.FIREBASE_COLLECTION_PATH
+import com.devozz.evodeme.util.Constants.FIREBASE_IMAGES_PATH
+import com.devozz.evodeme.util.toast
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.android.synthetic.main.activity_upload.*
+import java.util.*
 import java.util.UUID.randomUUID
 
 class UploadActivity : AppCompatActivity() {
@@ -54,6 +58,7 @@ class UploadActivity : AppCompatActivity() {
 
     private fun initListeners() {
         btnUpload.setOnClickListener { uploadOperation() }
+        uploadImageView.setOnClickListener { uploadImageOperation() }
     }
 
     private fun initUI() {
@@ -69,25 +74,15 @@ class UploadActivity : AppCompatActivity() {
     }
 
 
-    fun imageViewClicked(view: View) {
-
-        if (ContextCompat.checkSelfPermission(
-                this,
-                READ_EXTERNAL_STORAGE
-            ) != PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(READ_EXTERNAL_STORAGE),
-                1
-            )
+    private fun uploadImageOperation() {
+        if (checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            requestPermissions(this, arrayOf(READ_EXTERNAL_STORAGE), 1)
         } else {
             Intent(ACTION_PICK, EXTERNAL_CONTENT_URI).also {
                 startActivityForResult(it, 2)
 
             }
         }
-
     }
 
     override fun onRequestPermissionsResult(
@@ -136,22 +131,24 @@ class UploadActivity : AppCompatActivity() {
                 .child("${randomUUID()}.jpg")
                 .putFile(image)
                 .addOnSuccessListener {
-                    it.storage.downloadUrl.let { uri ->
-                        hashMapOf<String, Any>().apply {
-                            put(DB_FIELD_DOWNLOADURL, uri.toString())
-                            put(DB_FIELD_USEREMAIL, auth.currentUser?.email.toString())
-                            put(DB_FIELD_COMMENT, uploadCommentText.text.toString())
-                            put(DB_FIELD_DATE, Timestamp.now())
-                        }.also {
-                            db.collection(FIREBASE_COLLECTION_PATH)
-                                .add(it)
-                                .addOnCompleteListener { task ->
-                                    if (task.isComplete && task.isSuccessful) finish()
-                                }.addOnFailureListener { exception ->
-                                    toast(exception.message.toString())
-                                }
-                        }
-                    }
+                    setPostData(it.storage.downloadUrl.toString())
+                }
+        } ?: kotlin.run { setPostData() }
+    }
+
+    private fun setPostData(selectedPhotoUri: String? = null) {
+        hashMapOf<String, Any>().apply {
+            put(DB_FIELD_DOWNLOADURL, selectedPhotoUri?: String())
+            put(DB_FIELD_USEREMAIL, auth.currentUser?.email.toString())
+            put(DB_FIELD_COMMENT, uploadCommentText.text.toString())
+            put(DB_FIELD_DATE, Timestamp.now())
+        }.also { hashMap ->
+            db.collection(FIREBASE_COLLECTION_PATH)
+                .add(hashMap)
+                .addOnCompleteListener { task ->
+                    if (task.isComplete && task.isSuccessful) finish()
+                }.addOnFailureListener { exception ->
+                    toast(exception.message.toString())
                 }
         }
     }

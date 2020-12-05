@@ -1,12 +1,12 @@
-package com.devozz.evodeme
+package com.devozz.evodeme.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.devozz.evodeme.utils.toast
+import com.devozz.evodeme.R
+import com.devozz.evodeme.util.toast
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
